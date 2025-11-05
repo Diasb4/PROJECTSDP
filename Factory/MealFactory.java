@@ -1,6 +1,9 @@
 package Factory;
 
-import Meals.*;
+import Meals.Drinks.*;
+import Meals.Desserts.*;
+import Meals.SideDish.*;
+import Meals.Dish.*;
 import interfaces.IMeal;
 
 import java.util.HashMap;
@@ -14,16 +17,19 @@ public class MealFactory {
         mealMap.put("pizza", Pizza::new);
         mealMap.put("burger", Burger::new);
         mealMap.put("salad", Salad::new);
+        mealMap.put("fries", Fries::new);
+        mealMap.put("coke", Coke::new);
+        mealMap.put("icecream", IceCream::new);
     }
 
+    // MealFactory с нормализацией
     public IMeal createDish(String type) {
-        // нормализуем строку: убираем лишние пробелы, знаки и приводим к нижнему
-        // регистру
-        String normalized = type.trim().replaceAll("[^a-zA-Z]", "").toLowerCase();
+        String normalized = type.trim().toLowerCase().replaceAll("[^a-zA-Z]", "");
         Supplier<IMeal> supplier = mealMap.get(normalized);
         if (supplier != null) {
             return supplier.get();
         }
-        throw new IllegalArgumentException("Неизвестное блюдо: " + type);
+        throw new IllegalArgumentException("Unknown dish: " + type);
     }
+
 }

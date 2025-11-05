@@ -1,4 +1,4 @@
-package Meals;
+package Meals.Dish;
 
 import Config.RestaurantOrderConfig;
 import interfaces.IMeal;

@@ -1,21 +1,22 @@
-package Meals;
+package Meals.Desserts;
 
 import Config.RestaurantOrderConfig;
 import interfaces.IMeal;
 
-public class Salad implements IMeal {
+public class IceCream implements IMeal {
     @Override
     public String getDescription() {
-        return RestaurantOrderConfig.SALAD;
+        return RestaurantOrderConfig.ICE_CREAM;
     }
 
     @Override
     public float getPrice() {
-        return RestaurantOrderConfig.SALAD_PRICE;
+        return RestaurantOrderConfig.ICE_CREAM_PRICE;
     }
 
     @Override
     public void serve() {
         System.out.println("Serving a " + getDescription() + "!");
     }
+
 }

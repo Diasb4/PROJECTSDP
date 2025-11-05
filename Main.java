@@ -1,18 +1,18 @@
-import Factory.MealFactory;
+import Orders.OrderBuilder;
 import interfaces.IMeal;
-
-import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 import java.util.Scanner;
+
+import Meals.Dish.Pizza;
 
 public class Main {
     public static void main(String[] args) {
         System.out.println("Welcome to the Restaurant Order System!");
         System.out.println("We have Pizza, Burger, and Salad.");
-        // Инициализация сканера, фабрики и списка заказов
+
         Scanner scanner = new Scanner(System.in);
-        MealFactory factory = new MealFactory();
-        List<IMeal> orders = new ArrayList<>();
+        OrderBuilder builder = new OrderBuilder();
 
         boolean ordering = true;
         while (ordering) {
@@ -20,12 +20,11 @@ public class Main {
             String input = scanner.nextLine();
 
             try {
-                IMeal meal = factory.createDish(input);
-                orders.add(meal);
-                System.out.println(meal.getDescription() + " added to your order.");
+                builder.addDish(input);
+                System.out.println(input + " added to your order.");
             } catch (IllegalArgumentException e) {
                 System.out.println(e.getMessage() + " Please try again.");
-                continue; // просим пользователя ввести заново
+                continue;
             }
 
             System.out.println("Anything else? (yes/no)");
@@ -34,15 +33,23 @@ public class Main {
                 ordering = false;
             }
         }
-        // Вывод итогового заказа
+
+        // Получаем готовый заказ
+        List<IMeal> orders = builder.build();
+
         System.out.println("Ordered Items:");
-        double total = 0;
-        for (IMeal item : orders) {
-            System.out.println(item.getDescription() + " - $" + item.getPrice());
-            total += item.getPrice();
+        for (IMeal meal : orders) {
+            System.out.println(meal.getDescription() + " - $" + meal.getPrice());
         }
-        System.out.printf("Total: $%.2f%n", total);
-        System.out.println("Thank you for your order!");
+        System.out.printf("Total: $%.2f%n", builder.getTotalPrice());
+        // Демонстрация использования нового билдера
+        OrderBuilder newBuilder = new OrderBuilder();
+        newBuilder.addDish("pizza")
+                .addDish("fries")
+                .addDish("coke")
+                .addDish("icecream");
+
+        System.out.printf(Locale.US, "New Order Total: $%.2f%n", newBuilder.getTotalPrice());
 
         scanner.close();
     }
