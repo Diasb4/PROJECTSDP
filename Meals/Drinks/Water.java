@@ -1,17 +1,19 @@
-package Meals.SideDish;
+package Meals.Drinks;
 
-import Config.RestaurantOrderConfig;
 import interfaces.IMeal;
 
-public class Fries implements IMeal {
+public class Water implements IMeal {
+    private final String description = "Water";
+    private final float price = 1.0f;
+
     @Override
     public String getDescription() {
-        return RestaurantOrderConfig.FRIES;
+        return description;
     }
 
     @Override
     public float getPrice() {
-        return RestaurantOrderConfig.FRIES_PRICE;
+        return price;
     }
 
     @Override

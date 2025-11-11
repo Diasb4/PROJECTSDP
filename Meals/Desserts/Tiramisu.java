@@ -1,17 +1,19 @@
 package Meals.Desserts;
 
-import Config.RestaurantOrderConfig;
 import interfaces.IMeal;
 
-public class IceCream implements IMeal {
+public class Tiramisu implements IMeal {
+    private final String Tiramisu = "Tiramisu";
+    private final float Tiramisu_Price = 3.50f;
+
     @Override
     public String getDescription() {
-        return RestaurantOrderConfig.ICE_CREAM;
+        return Tiramisu;
     }
 
     @Override
     public float getPrice() {
-        return RestaurantOrderConfig.ICE_CREAM_PRICE;
+        return Tiramisu_Price;
     }
 
     @Override

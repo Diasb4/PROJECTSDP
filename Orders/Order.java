@@ -40,7 +40,7 @@ public class Order {
     }
 
     public void showOrder() {
-        System.out.println("Your Order:");
+        System.out.println("\nYour Order:");
         if (mainDish != null)
             System.out.println("Main Dish: " + mainDish.getDescription() + " - $" + mainDish.getPrice());
         for (IMeal side : sides)

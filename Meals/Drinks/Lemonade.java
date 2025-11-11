@@ -2,9 +2,9 @@ package Meals.Drinks;
 
 import interfaces.IMeal;
 
-public class Coke implements IMeal {
-    private final String description = "Coke";
-    private final float price = 1.5f;
+public class Lemonade implements IMeal {
+    private final String description = "Lemonade";
+    private final float price = 1.75f;
 
     @Override
     public String getDescription() {
@@ -18,7 +18,6 @@ public class Coke implements IMeal {
 
     @Override
     public void serve() {
-        System.out.println("Serving a " + getDescription() + "!");
+        System.out.println("Serving a " + description + "!");
     }
-
 }

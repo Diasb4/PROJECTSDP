@@ -1,16 +1,10 @@
 package Meals.Dish;
 
-import Config.RestaurantOrderConfig;
 import interfaces.IMeal;
 
-public class Pizza implements IMeal {
-    private final String description;
-    private final float price;
-
-    public Pizza() {
-        this.description = RestaurantOrderConfig.PIZZA;
-        this.price = RestaurantOrderConfig.PIZZA_PRICE;
-    }
+public class Pizza_Margherita implements IMeal {
+    private final String description = "Pizza Margherita";
+    private final float price = 8.99f;
 
     @Override
     public String getDescription() {

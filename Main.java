@@ -1,55 +1,67 @@
 import Orders.OrderBuilder;
+import Orders.Order;
 import interfaces.IMeal;
-import java.util.List;
-import java.util.Locale;
-import java.util.Scanner;
+import java.util.*;
 
-import Meals.Dish.Pizza;
+import Meals.Dish.*;
+import Meals.Desserts.*;
+import Meals.Drinks.*;
 
 public class Main {
     public static void main(String[] args) {
         System.out.println("Welcome to the Restaurant Order System!");
-        System.out.println("We have Pizza, Burger, and Salad.");
+        System.out.println("Menu:");
+
+        List<IMeal> menu = List.of(
+                new Pizza_Margherita(),
+                new Pizza_Pepperoni(),
+                new Lasagna(),
+                new Gelato(),
+                new Tiramisu(),
+                new Coke(),
+                new Lemonade(),
+                new Water());
+
+        for (IMeal meal : menu) {
+            System.out.printf("- %-20s : $%.2f%n", meal.getDescription(), meal.getPrice());
+        }
 
         Scanner scanner = new Scanner(System.in);
         OrderBuilder builder = new OrderBuilder();
 
-        boolean ordering = true;
-        while (ordering) {
-            System.out.println("What would you like to order?");
-            String input = scanner.nextLine();
+        while (true) {
+            System.out.println("\nEnter item name to add (or 'done' to finish):");
+            String input = scanner.nextLine().trim().toLowerCase();
 
-            try {
-                builder.addDish(input);
-                System.out.println(input + " added to your order.");
-            } catch (IllegalArgumentException e) {
-                System.out.println(e.getMessage() + " Please try again.");
-                continue;
-            }
+            if (input.equals("done"))
+                break;
 
-            System.out.println("Anything else? (yes/no)");
-            String response = scanner.nextLine().trim().toLowerCase();
-            if (!response.equals("yes") && !response.equals("y")) {
-                ordering = false;
+            Optional<IMeal> selected = menu.stream()
+                    .filter(m -> m.getDescription().toLowerCase().equals(input))
+                    .findFirst();
+
+            if (selected.isPresent()) {
+                IMeal meal = selected.get();
+                if (meal instanceof Meals.Dish.Lasagna || meal instanceof Meals.Dish.Pizza_Margherita
+                        || meal instanceof Meals.Dish.Pizza_Pepperoni) {
+                    builder.setMainDish(meal.getDescription());
+                } else if (meal instanceof Meals.Desserts.Gelato || meal instanceof Meals.Desserts.Tiramisu) {
+                    builder.setDessert(meal.getDescription());
+                } else if (meal instanceof Meals.Drinks.Coke || meal instanceof Meals.Drinks.Lemonade
+                        || meal instanceof Meals.Drinks.Water) {
+                    builder.setDrink(meal.getDescription());
+                } else {
+                    builder.addSide(meal.getDescription());
+                }
+                System.out.println(meal.getDescription() + " added!");
+            } else {
+                System.out.println("Sorry, we don’t have that item.");
             }
         }
 
-        // Получаем готовый заказ
-        List<IMeal> orders = builder.build();
-
-        System.out.println("Ordered Items:");
-        for (IMeal meal : orders) {
-            System.out.println(meal.getDescription() + " - $" + meal.getPrice());
-        }
-        System.out.printf("Total: $%.2f%n", builder.getTotalPrice());
-        // Демонстрация использования нового билдера
-        OrderBuilder newBuilder = new OrderBuilder();
-        newBuilder.addDish("pizza")
-                .addDish("fries")
-                .addDish("coke")
-                .addDish("icecream");
-
-        System.out.printf(Locale.US, "New Order Total: $%.2f%n", newBuilder.getTotalPrice());
+        Order order = builder.build();
+        System.out.println();
+        order.showOrder();
 
         scanner.close();
     }

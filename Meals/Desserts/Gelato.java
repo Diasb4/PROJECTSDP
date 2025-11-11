@@ -1,21 +1,24 @@
-package Meals.SideDish;
+package Meals.Desserts;
 
-import Config.RestaurantOrderConfig;
 import interfaces.IMeal;
 
-public class Salad implements IMeal {
+public class Gelato implements IMeal {
+    private final String Gelato = "Gelato";
+    private final float Gelato_Price = 3.00f;
+
     @Override
     public String getDescription() {
-        return RestaurantOrderConfig.SALAD;
+        return Gelato;
     }
 
     @Override
     public float getPrice() {
-        return RestaurantOrderConfig.SALAD_PRICE;
+        return Gelato_Price;
     }
 
     @Override
     public void serve() {
         System.out.println("Serving a " + getDescription() + "!");
     }
+
 }

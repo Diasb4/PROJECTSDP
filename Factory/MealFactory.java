@@ -2,7 +2,6 @@ package Factory;
 
 import Meals.Drinks.*;
 import Meals.Desserts.*;
-import Meals.SideDish.*;
 import Meals.Dish.*;
 import interfaces.IMeal;
 
@@ -14,22 +13,24 @@ public class MealFactory {
     private final Map<String, Supplier<IMeal>> mealMap = new HashMap<>();
 
     public MealFactory() {
-        mealMap.put("pizza", Pizza::new);
-        mealMap.put("burger", Burger::new);
-        mealMap.put("salad", Salad::new);
-        mealMap.put("fries", Fries::new);
+        // ключи без пробелов, чтобы совпадали с нормализацией
+        mealMap.put("pizzamargherita", Pizza_Margherita::new);
+        mealMap.put("pizzapepperoni", Pizza_Pepperoni::new);
+        mealMap.put("lasagna", Lasagna::new);
+        mealMap.put("gelato", Gelato::new);
+        mealMap.put("tiramisu", Tiramisu::new);
         mealMap.put("coke", Coke::new);
-        mealMap.put("icecream", IceCream::new);
+        mealMap.put("lemonade", Lemonade::new);
+        mealMap.put("water", Water::new);
     }
 
-    // MealFactory с нормализацией
-    public IMeal createDish(String type) {
-        String normalized = type.trim().toLowerCase().replaceAll("[^a-zA-Z]", "");
+    public IMeal createMeal(String type) {
+        String normalized = type.trim().toLowerCase().replaceAll("[^a-z]", ""); // убираем всё, кроме латиницы
         Supplier<IMeal> supplier = mealMap.get(normalized);
         if (supplier != null) {
             return supplier.get();
         }
-        throw new IllegalArgumentException("Unknown dish: " + type);
-    }
+        throw new IllegalArgumentException("Menu item not found: " + type + ". Please check your spelling.");
 
+    }
 }
