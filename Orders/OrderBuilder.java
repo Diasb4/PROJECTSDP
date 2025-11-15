@@ -1,7 +1,6 @@
 package Orders;
 
 import Factory.MealFactory;
-import interfaces.IMeal;
 
 public class OrderBuilder {
     private final MealFactory factory = new MealFactory();

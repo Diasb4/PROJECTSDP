@@ -51,4 +51,13 @@ public class Order {
             System.out.println("Dessert: " + dessert.getDescription() + " - $" + dessert.getPrice());
         System.out.printf("Total: $%.2f%n", getTotalPrice());
     }
+
+    public List<IMeal> getAllMeals() {
+        List<IMeal> allMeals = new ArrayList<>();
+        if (mainDish != null) allMeals.add(mainDish);
+        allMeals.addAll(sides);
+        if (drink != null) allMeals.add(drink);
+        if (dessert != null) allMeals.add(dessert);
+        return allMeals;
+    }
 }

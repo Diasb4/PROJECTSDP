@@ -1,68 +1,42 @@
 import Orders.OrderBuilder;
 import Orders.Order;
+import Visitor.CookingTimeVisitor;
 import interfaces.IMeal;
-import java.util.*;
-
-import Meals.Dish.*;
-import Meals.Desserts.*;
-import Meals.Drinks.*;
 
 public class Main {
     public static void main(String[] args) {
         System.out.println("Welcome to the Restaurant Order System!");
-        System.out.println("Menu:");
 
-        List<IMeal> menu = List.of(
-                new Pizza_Margherita(),
-                new Pizza_Pepperoni(),
-                new Lasagna(),
-                new Gelato(),
-                new Tiramisu(),
-                new Coke(),
-                new Lemonade(),
-                new Water());
-
-        for (IMeal meal : menu) {
-            System.out.printf("- %-20s : $%.2f%n", meal.getDescription(), meal.getPrice());
-        }
-
-        Scanner scanner = new Scanner(System.in);
+        // Создаём заказ без Scanner
         OrderBuilder builder = new OrderBuilder();
 
-        while (true) {
-            System.out.println("\nEnter item name to add (or 'done' to finish):");
-            String input = scanner.nextLine().trim().toLowerCase();
+        // Пример заказа
+        builder.setMainDish("lasagna");// Главное блюдо
+        builder.setDrink("water"); // Напиток
+        builder.setDessert("tiramisu");// Дессерт
+        builder.addSide("pizza margherita"); // Доп. Блюдо
 
-            if (input.equals("done"))
-                break;
-
-            Optional<IMeal> selected = menu.stream()
-                    .filter(m -> m.getDescription().toLowerCase().equals(input))
-                    .findFirst();
-
-            if (selected.isPresent()) {
-                IMeal meal = selected.get();
-                if (meal instanceof Meals.Dish.Lasagna || meal instanceof Meals.Dish.Pizza_Margherita
-                        || meal instanceof Meals.Dish.Pizza_Pepperoni) {
-                    builder.setMainDish(meal.getDescription());
-                } else if (meal instanceof Meals.Desserts.Gelato || meal instanceof Meals.Desserts.Tiramisu) {
-                    builder.setDessert(meal.getDescription());
-                } else if (meal instanceof Meals.Drinks.Coke || meal instanceof Meals.Drinks.Lemonade
-                        || meal instanceof Meals.Drinks.Water) {
-                    builder.setDrink(meal.getDescription());
-                } else {
-                    builder.addSide(meal.getDescription());
-                }
-                System.out.println(meal.getDescription() + " added!");
-            } else {
-                System.out.println("Sorry, we don’t have that item.");
-            }
-        }
-
+        // Собираем заказ
         Order order = builder.build();
-        System.out.println();
-        order.showOrder();
 
-        scanner.close();
+        System.out.println("\nYour Order:");
+        order.showOrder();
+        CookingTimeVisitor visitor=new CookingTimeVisitor();
+        order.getAllMeals().forEach(IMeal->IMeal.accept(visitor));
+        System.out.println("Total cooking time: "+visitor.getTotalTime()+"min");
+
+        OrderBuilder builder2 = new OrderBuilder();
+
+        builder2.setMainDish("Pizza Pepperoni");
+        builder2.addSide("Pizza Margherita");
+        builder2.addSide("Pizza Margherita");
+
+        Order order2 = builder2.build();
+        System.out.println("\nYour Order:");
+        order2.showOrder();
+        CookingTimeVisitor visitor1=new CookingTimeVisitor();
+        order2.getAllMeals().forEach(IMeal->IMeal.accept(visitor1));
+        System.out.println("Total cooking time: "+visitor1.getTotalTime()+"min");
+
     }
 }

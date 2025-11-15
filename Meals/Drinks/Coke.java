@@ -1,10 +1,21 @@
 package Meals.Drinks;
 
+import Visitor.MealVisitor;
 import interfaces.IMeal;
 
 public class Coke implements IMeal {
-    private final String description = "Coke";
-    private final float price = 1.5f;
+    private String description = "Coke";
+    private float price = 1.5f;
+    private int CookingTime=3;
+
+    @Override
+    public int getCookingTime() {
+        return CookingTime;
+    }
+
+    public void setCookingTime(int cookingTime) {
+        CookingTime = cookingTime;
+    }
 
     @Override
     public String getDescription() {
@@ -19,6 +30,17 @@ public class Coke implements IMeal {
     @Override
     public void serve() {
         System.out.println("Serving a " + getDescription() + "!");
+    }
+    @Override
+    public void accept(MealVisitor visitor) {
+        visitor.visit(this);
+    }
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public void setPrice(float price) {
+        this.price = price;
     }
 
 }
