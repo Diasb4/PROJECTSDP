@@ -26,6 +26,22 @@ public class Order {
         this.dessert = dessert;
     }
 
+    public IMeal getMainDish() {
+        return mainDish;
+    }
+
+    public List<IMeal> getSides() {
+        return sides;
+    }
+
+    public IMeal getDrink() {
+        return drink;
+    }
+
+    public IMeal getDessert() {
+        return dessert;
+    }
+
     public double getTotalPrice() {
         double total = 0;
         if (mainDish != null)
@@ -54,10 +70,13 @@ public class Order {
 
     public List<IMeal> getAllMeals() {
         List<IMeal> allMeals = new ArrayList<>();
-        if (mainDish != null) allMeals.add(mainDish);
+        if (mainDish != null)
+            allMeals.add(mainDish);
         allMeals.addAll(sides);
-        if (drink != null) allMeals.add(drink);
-        if (dessert != null) allMeals.add(dessert);
+        if (drink != null)
+            allMeals.add(drink);
+        if (dessert != null)
+            allMeals.add(dessert);
         return allMeals;
     }
 }
